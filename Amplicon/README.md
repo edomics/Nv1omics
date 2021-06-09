@@ -1,4 +1,4 @@
-Amplicon Analysis
+# Amplicon Analysis
 
 Create sample list
 ```
