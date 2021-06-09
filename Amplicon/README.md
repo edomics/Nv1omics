@@ -43,6 +43,9 @@ abunread=read.table("read.abun.15k",header=FALSE)
 ggplot(abunread,aes(V2,V3))+geom_line(aes(color=V1))+theme(legend.position = "none")
 ```
 
+![plot](./rank.read.abun.plot.pdf)
+
+
 Identify filtering threshold. I.e. abundance in a sample should be >= X and present in more than one sample.
 ```
 while read sample; do seqkit shuffle $sample.cuta.fasta | seqkit seq -w0 | head -30000 | grep -v ">" | sort | uniq -c | awk '$1 >= 300'; done < sample.15k.list | awk '{print $2}' | sort | uniq -c | sort -k1,1nr | awk '$1 > 1' | wc -l
