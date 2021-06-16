@@ -12,16 +12,28 @@ Assemble genomes: The aim here was to try and assemble both haplotypes. We used 
 
 Polish genomes: We performed two rounds of polishing using Arrow.
 1) Create a copy of the unpolished genome with slightly modified contig names:
+
 ``` cat ../100x.g500.assembly.contigs.fasta | sed -E 's/ len.*//' > stella.cl1.canu2.unpol.contigs.fasta ```
+
 2) Use pbmm2 to align native PacBio data to assembly:
+
 ``` pbmm2 align stella.cl1.canu2.unpol.contigs.fasta /projects/areitze2_research/ED/PACBIO/STELLA_FL_CLETUS/CL1/m54336U_200407_162728.subreads.bam aligned.movie.r1.bam --sort -j 8 -J 8 -m 32G --preset SUBREAD ```
+
 3) Index unpolished assembly
+
 ``` samtools faidx stella.ve1.canu2.unpol.contigs.fasta ```
+
 4) Make directory for polished assembly
+
 ``` mkdir polished_seqs ```
+
 5) Index BAM file generated in step 2
+
 ``` bamtools index -in aligned.movie.r1.bam ```
+
 6) Use gcpp to polish the assembly
+
 ``` gcpp -j 20 -r stella.cl1.canu2.unpol.contigs.fasta -o polished_seqs/stella.cl1.canu.contigs.polished.r1.fasta aligned.movie.r1.bam ```
+
 7) Repeat steps 2-6 on the round 1 polished assembly.
 
