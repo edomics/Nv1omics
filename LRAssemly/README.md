@@ -75,5 +75,14 @@ done < <(ls ../FASTQ/pass/*.fastq)
 guppy_barcoder -t 10 -i ./ -s ./BC --barcode_kits EXP-NBD104 --trim_barcodes
 ```
 
+Concatenate files from barcode 12
 
+```
+cat ./BC/barcode12/*.fastq > me3.b12.raw.fastq
+```
 
+Assemble: Similar to above approach for PacBio reads, use Canu settings to try and separate haplotypes. With the lower coverage and noisier Nanopore reads, getting a good diploid assembly is unlikely but these settings should hopefully avoid a mismatched assembly of the Nv1 locus that might confuse the haplotype structure. Canu (v2.1) was used for assembly. 
+
+```
+/scratch/esmit245/CANU.2.1/canu-2.1/bin/canu -d ME3.HAC.50XD331.v2.1 -p me3.canu.v2.1 genomeSize=230m useGrid=true gridOptions="--partition=Pisces" -gridOptionscns="--mem-per-cpu=3600m" minReadLength=1000 corOutCoverage=50 "batOptions=-dg 3 -db 3 -dr 1 -ca 500 -cp 50" -nanopore me3.b12.raw.fastq
+```
