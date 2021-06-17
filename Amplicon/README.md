@@ -2,7 +2,7 @@
 
 Create sample list
 ```
-code for sample list - edit when new files arrive
+ls *.R1.fastq.gz | sed -E 's/.R1.fastq.gz//' > sample.list
 ```
 
 Create sample file for mothur
