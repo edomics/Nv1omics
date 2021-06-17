@@ -43,7 +43,7 @@ while read sample; do seqkit shuffle -s 1984 $sample.cuta.fasta | seqkit seq -w0
 
 Can plot this in R:
 ```
-library(ggplot)
+library(ggplot2)
 abunread=read.table("read.abun.15k",header=FALSE)
 ggplot(abunread,aes(V2,V3))+geom_line(aes(color=V1))+theme(legend.position = "none")+xlim(c(0,16))+xlab("Rank")+ylab("Abundance")
 ```
