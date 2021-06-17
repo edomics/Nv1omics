@@ -24,16 +24,21 @@ Use cutadapt to remove primer sequences
 ```
 while read sample; do cutadapt --trimmed-only -a ^AGAACATGGCCTCGTTCAAG...TTGGGCTACATGTTTAGCTAG$ -o $sample.cuta.fasta $sample.trim.contigs.trim.fasta; done < sample.list
 ```
-***Use this when you get remaining samples from Jason ^
 
-Create list of samples with >15,000 reads (excludes 6 samples with insufficient reads from further analysis)
+Create a list of sample read abundance
 ```
-wc -l *.cuta.fasta | awk '$1 > 30000' | grep -v "total" | awk '{print $2}' | sed -E 's/(.*).cuta.fasta/\1/' > sample.15k.list
+wc -l *.cuta.fasta | awk '{print $1/2"\t"$2}' | sort -n -k1,1 | grep -v "total" > sample.read.abun
+```
+
+From this, we can see that a 156/160 samples have at least 14,800 reads so we'll use this as our threshold.
+Create a new sample list of samples with >= 14,800 reads (excludes 4 samples with insufficient reads from further analysis)
+```
+cat sample.read.abun | awk '$1 >= 14800' | cut -f2 | sed -E 's/.cuta.fasta//' > sample.thresd.list
 ```
 
 Calculate the abundance of the 30 most abundant sequences in each individual.
 ```
-while read sample; do seqkit shuffle $sample.cuta.fasta | seqkit seq -w0 | head -30000 | grep -v ">" | sort | uniq -c | awk '{print $1}' | sort -k1,1nr | head -30 | awk -v sample=$sample '{print sample"\t"NR"\t"$1}'; done > read.abun.15k < sample.15k.list
+while read sample; do seqkit shuffle -s 1984 $sample.cuta.fasta | seqkit seq -w0 | head -30000 | grep -v ">" | sort | uniq -c | awk '{print $1}' | sort -k1,1nr | head -30 | awk -v sample=$sample '{print sample"\t"NR"\t"$1}'; done > read.abun.thresd < sample.thresd.list
 ```
 
 Can plot this in R:
