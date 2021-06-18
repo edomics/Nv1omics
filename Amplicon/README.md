@@ -58,6 +58,8 @@ ggplot(abunread,aes(V2,V3))+geom_line(aes(color=V1))+theme(legend.position = "no
 
 ![plot](rank.read.abun.plot.png)
 
+![plot](./rank.read.abun.png)
+
 Identify filtering threshold. I.e. abundance in a sample should be >= X and present in more than one sample.
 ```
 while read sample; do cat $sample.norm.fasta | grep -v ">" | sort | uniq -c | awk '$1 >= 300'; done < sample.thresd.list | awk '{print $2}' | sort | uniq -c | sort -k1,1nr | awk '$1 > 1' | wc -l
