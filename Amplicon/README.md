@@ -56,9 +56,6 @@ ggplot(abunread,aes(V2,V3))+geom_line(aes(color=V1))+theme(legend.position = "no
 
 ![plot](rank.read.abun.plot.png)
 
-![plot](rank.read.abun.plot.png)
-
-![plot](./rank.read.abun.png)
 
 Identify filtering threshold. I.e. abundance in a sample should be >= X and present in more than one sample.
 ```
