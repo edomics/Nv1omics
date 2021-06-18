@@ -36,9 +36,15 @@ Create a new sample list of samples with >= 14,800 reads (excludes 4 samples wit
 cat sample.read.abun | awk '$1 >= 14800' | cut -f2 | sed -E 's/.cuta.fasta//' > sample.thresd.list
 ```
 
+Resample without replacement all fasta files to create fasta files for all individuals with the same read depth (14,800).
+```
+while read sample; do seqkit shuffle -s 1984 $sample.cuta.fasta | seqkit seq -w0 | head -29600 > $sample.norm.fasta; done < sample.thresd.list
+```
+
+
 Calculate the abundance of the 30 most abundant sequences in each individual.
 ```
-while read sample; do seqkit shuffle -s 1984 $sample.cuta.fasta | seqkit seq -w0 | head -30000 | grep -v ">" | sort | uniq -c | awk '{print $1}' | sort -k1,1nr | head -30 | awk -v sample=$sample '{print sample"\t"NR"\t"$1}'; done > read.abun.thresd < sample.thresd.list
+while read sample; do cat $sample.norm.fasta | grep -v ">" | sort | uniq -c | awk '{print $1}' | sort -k1,1nr | head -30 | awk -v sample=$sample '{print sample"\t"NR"\t"$1}'; done > read.abun.thresd < sample.thresd.list
 ```
 
 Can plot this in R:
@@ -53,7 +59,7 @@ ggplot(abunread,aes(V2,V3))+geom_line(aes(color=V1))+theme(legend.position = "no
 
 Identify filtering threshold. I.e. abundance in a sample should be >= X and present in more than one sample.
 ```
-while read sample; do seqkit shuffle $sample.cuta.fasta | seqkit seq -w0 | head -30000 | grep -v ">" | sort | uniq -c | awk '$1 >= 300'; done < sample.15k.list | awk '{print $2}' | sort | uniq -c | sort -k1,1nr | awk '$1 > 1' | wc -l
+while read sample; do cat $sample.norm.fasta | grep -v ">" | sort | uniq -c | awk '$1 >= 300'; done < sample.thresd.list | awk '{print $2}' | sort | uniq -c | sort -k1,1nr | awk '$1 > 1' | wc -l
 ```
 
 
