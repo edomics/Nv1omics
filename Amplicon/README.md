@@ -62,4 +62,32 @@ Identify filtering threshold. I.e. abundance in a sample should be >= X and pres
 while read sample; do cat $sample.norm.fasta | grep -v ">" | sort | uniq -c | awk '$1 >= 300'; done < sample.thresd.list | awk '{print $2}' | sort | uniq -c | sort -k1,1nr | awk '$1 > 1' | wc -l
 ```
 
+***Insert plot of thresh vs n.variants + extended explanation of 100 read threshold vs copy number***
+
+Filter resampled fastas for reads with abundances >= 100 reads. Store abundance in ids
+```
+while read sample; do cat $sample.norm.fasta | grep -v ">" | sort | uniq -c | sort -nr -k1,1 | awk '$1 >= 100' | awk '{print $1"\t"$2}' | sed -E "s/(.*)\t(.*)/\>$sample.\1\n\2/"; done < sample.thresd.list > abun.gt100.fasta
+```
+
+Collapse this fasta to create a list of variants present in greater than 1 individual
+```
+cat abun.gt100.fasta | grep -v ">" | sort | uniq -c | awk '$1 > 1' | sort -nr -k1,1 | awk '{print $2"\t"$1}' > uniq.gt100.nind
+```
+
+Create a fasta of variants ordered by primarily by the number of individuals the sequence is found in and secondly by the total number of reads assigned to this variant
+```
+while read seq nind; do seqkit fx2tab abun.gt100.fasta | awk -v seq=$seq '$2 == seq' | sed -E 's/\.([0-9]+)/\t\1/' | cut -f2 | paste -sd+ | bc | awk -v seq=$seq -v nind=$nind '{print seq"\t"nind"\t"$1}'; done < uniq.gt100.nind | sort -k2,2nr -k3,3nr | awk '{print ">Nv1.AmpV"NR".nind"$2".nseq"$3"\n"$1}' > nv1.amp.variants.fasta
+```
+
+Transform the fasta to a table using seqkit with simplified ids
+```
+seqkit fx2tab nv1.amp.variants.fasta | sed -E 's/Nv1.AmpV([0-9]+).nind[0-9]+.nseq[0-9]+/\1/' > nv1.amp.variants.tab
+```
+
+Create a long format count table to document the read abundance of each variant using the read abundance stored in the ids during the filtering step
+```
+while read varid seq; do seqkit fx2tab abun.gt100.fasta | awk -v seq=$seq '$2 == seq' | cut -f1 | sed -E 's/\.([0-9]+)/\t\1/' | awk -v varid=$varid '{print $1"\t"$2"\t"varid}'; done < nv1.amp.variants.tab | sort -k1,1 -k2,2nr > nv1.amp.variants.count.table.long
+```
+
+Using the R script XXXX to create associated plots.
 
