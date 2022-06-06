@@ -1,5 +1,16 @@
 This page describes how we go from contigs to annotated haplotype maps of the Nv1 locus.
 
+Firstly, we performed a blastn query against each genome assembly to identify the relevant contigs
+
+blastn -query nv1.amp4blast.fasta -db $genome -outfmt 6
+
+Which identified the following as contigs containing Nv1:
+FL: tig00000262, tig00000186 (this tig is lacking Nv1 but included as it is the corresponding haplotype to tig00000262)
+NS: tig00000889, tig00001087
+ME: tig00001232
+NC: nc.hap1, nc.hap2, nc.hap2.f6 (these contigs were relabelled from Canu output - see NC Assembly directory)
+MD: chr10
+
 Using concatenated nv1 contigs fasta, generate a blast output and pull out Nv1 sequences that directly match to the amplicons used - this facilitates comparison between the datasets
 
 blastn -query ../VENOM_BLAST/GENOMES/nv1.amp4blast.fasta -db all.nv1tigs.fasta -outfmt 6 -out all.nv1tigs.blast
