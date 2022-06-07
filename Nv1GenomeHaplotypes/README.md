@@ -9,15 +9,15 @@ blastn -query nv1.amp4blast.fasta -db $genome -outfmt 6
 
 Which identified the following as contigs containing Nv1:
 
-FL: tig00000262, tig00000186 (this tig is lacking Nv1 but included as it is the corresponding haplotype to tig00000262)
+- FL: tig00000262, tig00000186 (this tig is lacking Nv1 but included as it is the corresponding haplotype to tig00000262)
 
-NS: tig00000889, tig00001087
+- NS: tig00000889, tig00001087
 
-ME: tig00001232
+- ME: tig00001232
 
-NC: nc.hap1, nc.hap2, nc.hap2.f6 (these contigs were relabelled from Canu output - see NC Assembly directory)
+- NC: nc.hap1, nc.hap2, nc.hap2.f6 (these contigs were relabelled from Canu output - see NC Assembly directory)
 
-MD: chr10
+- MD: chr10
 
 These Nv1-containing contigs were concatenated into a single fasta. Next, we generate a blast output and pull out Nv1 sequences that directly match to the amplicons used (we use the most abundant amplicon sequences as the query) - this facilitates comparison between the datasets
 
