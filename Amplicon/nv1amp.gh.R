@@ -1,12 +1,13 @@
-#amplicon processing
 library(reshape2)
 library(ggplot2)
 library(RColorBrewer)
 library(ComplexHeatmap)
 library(circlize)
 
+#amplicon processing
+
 #read in long format table
-dat=read.table("Documents/STELLA/NV1/AMP/nv1.amp.variants.count.table.long",header=FALSE)
+dat=read.table("nv1.amp.variants.count.table.long",header=FALSE)
 
 #convert into matrix format
 datm=dcast(dat,V1~V3,value.var = "V2")
@@ -34,7 +35,7 @@ Heatmap(datm2[,colorder],col=col_fun,show_row_names = FALSE,row_split = 8, clust
 #bubbleplot
 
 #read genotype count table
-hethom=read.table("/Users/esmit245/Documents/STELLA/NV1/AMP/HetHom.table.tsv",header=TRUE)
+hethom=read.table("HetHom.table.tsv",header=TRUE)
 #order sites North to South
 hethom$Site=factor(hethom$Site,levels = c("NS","ME","NH","MA","NC"))
 #create bubble plot
