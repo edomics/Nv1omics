@@ -64,8 +64,7 @@ while read sample; do cat $sample.norm.fasta | grep -v ">" | sort | uniq -c | aw
 
 ***Insert plot of thresh vs n.variants + extended explanation of 100 read threshold vs copy number***
 
-![plot](uniq variants threshold.png)
-
+![plot]("uniq variants threshold.png")
 
 
 Filter resampled fastas for reads with abundances >= 100 reads. Store abundance in ids
