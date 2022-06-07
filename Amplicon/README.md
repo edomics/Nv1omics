@@ -92,5 +92,5 @@ Create a long format count table to document the read abundance of each variant 
 while read varid seq; do seqkit fx2tab abun.gt100.fasta | awk -v seq=$seq '$2 == seq' | cut -f1 | sed -E 's/\.([0-9]+)/\t\1/' | awk -v varid=$varid '{print $1"\t"$2"\t"varid}'; done < nv1.amp.variants.tab | sort -k1,1 -k2,2nr > nv1.amp.variants.count.table.long
 ```
 
-Using the R script XXXX to create associated plots.
+Using the R script nv1amp.gh.R to create associated plots.
 
