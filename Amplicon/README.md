@@ -62,10 +62,9 @@ Identify filtering threshold. I.e. abundance in a sample should be >= X and pres
 while read sample; do cat $sample.norm.fasta | grep -v ">" | sort | uniq -c | awk '$1 >= 300'; done < sample.thresd.list | awk '{print $2}' | sort | uniq -c | sort -k1,1nr | awk '$1 > 1' | wc -l
 ```
 
-***Insert plot of thresh vs n.variants + extended explanation of 100 read threshold vs copy number***
+To determine an appropriate threshold, we considered the profile of unique variants vs threshold (see plot below), and the inferred copy number based on counts. I.e. if the number of reads supporting a variant is 460 (out of 14800) and only a single copy of this variant is present in the diploid genome, then this reflects a total diploid copy number of ~32. This total copy number would correspond to perfect amplication of all non-pseudogene variants in our longest haplotype obtained by genome sequencing. We decided on a threshold of 100 reads (reflecting a total diploid copy number of 148), which identifies the same number of unique variants as 460 reads, yet, allows for some deviation from perfect amplication while avoiding issues associated with PCR/sequencing errors and index hopping.
 
 ![plot](uniq.var.threshold.png)
-
 
 
 Filter resampled fastas for reads with abundances >= 100 reads. Store abundance in ids
