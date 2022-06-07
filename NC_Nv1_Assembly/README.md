@@ -1,4 +1,4 @@
-NC haplotypes required independent assembly
+### NC haplotypes required independent assembly
 
 Validation of the NC assembly identified that haplotypes had been merged during the assembly and thus required independent assembly. Looking at the raw reads, it is possible to see that the intergenic spacing between Nv1 variants differs between the two haplotypes. Using these intergenic spacings, it is possible to separate the raw reads into those that can be identified as belonging to one haplotype or the other (reads that could not be unambiguously assigned were discarded) - these are stored in files hap1.read.ids and hap2.read.ids. Below hap1 is used as an example.
 
