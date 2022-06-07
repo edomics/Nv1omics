@@ -86,3 +86,23 @@ Assemble: Similar to above approach for PacBio reads, use Canu settings to try a
 ```
 canu -d ME3.HAC.50XD331.v2.1 -p me3.canu.v2.1 genomeSize=230m useGrid=true gridOptions="--partition=Pisces" -gridOptionscns="--mem-per-cpu=3600m" minReadLength=1000 corOutCoverage=50 "batOptions=-dg 3 -db 3 -dr 1 -ca 500 -cp 50" -nanopore me3.b12.raw.fastq
 ```
+
+Polish: ME and NC raw nanopore reads were aligned to the Nvec2.0 reference. The resulting bam files were subset to chr10:11,000,000:12,000,000 (a region spanning well beyond the Nv1 locus) and the ids of these reads recorded. Fasta files were subsequently generated from these ids and used to polish the corresponding ME and NC contigs:
+
+```
+#align reads to Nvec2.0
+minimap2 -t30 -ax map-ont Nvec200.fasta me3.b12.raw.fastq --secondary=no | samtools sort -m 270G -o me2nvec2.raw.aligned.bam -T tmp.ali
+#index bam
+samtools index me2nvec2.raw.aligned.bam
+#find reads located around Nv1 locus
+samtools view me2nvec2.raw.aligned.bam chr10:11000000-12000000 | cut -f1 | sort | uniq > me.c10.11m12m.ids
+#Use ids to create fasta for these reads
+seqkit grep -f me.c10.11m12m.ids me3.b12.raw.fastq | seqkit fq2fa | seqkit seq -w0 > me.c10.11m12m.fasta
+#Create fasta with ME assembly contig containing Nv1 locus
+seqkit seq -w0 | grep -A1 "tig00001232" > me.tig1232.fasta
+#align Nv1 locus reads to tig1232
+minimap2 -t30 me.tig1232.fasta me.c10.11m12m.fasta > mec10r.vs.me1232.paf
+#Polish tig1232 using these reads
+racon me.c10.11m12m.fasta mec10r.vs.me1232.paf me.tig1232.fasta > me.1232both.con1.fasta
+```
+
