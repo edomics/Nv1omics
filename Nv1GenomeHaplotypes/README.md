@@ -21,7 +21,7 @@ MD: chr10
 
 These Nv1-containing contigs were concatenated into a single fasta. Next, we generate a blast output and pull out Nv1 sequences that directly match to the amplicons used (we use the most abundant amplicon sequences as the query) - this facilitates comparison between the datasets
 
-For blast results (includinf coordinates to enable calculation of Nv1 copy location and intergenic distances):
+For blast results (including coordinates to enable calculation of Nv1 copy location and intergenic distances):
 ```
 blastn -query ../VENOM_BLAST/GENOMES/nv1.amp4blast.fasta -db all.nv1tigs.fasta -outfmt 6 -out all.nv1tigs.blast
 ```
