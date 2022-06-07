@@ -1,4 +1,4 @@
-###Locating Nv1
+### Locating Nv1
 
 This page describes how we go from contigs to annotated haplotype maps of the Nv1 locus.
 
