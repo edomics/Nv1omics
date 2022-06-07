@@ -10,7 +10,6 @@ blastn -query nv1.amp4blast.fasta -db $genome -outfmt 6
 Which identified the following as contigs containing Nv1:
 
 - FL: tig00000262, tig00000186 (this tig is lacking Nv1 but included as it is the corresponding haplotype to tig00000262)
-
 - NS: tig00000889, tig00001087
 
 - ME: tig00001232
