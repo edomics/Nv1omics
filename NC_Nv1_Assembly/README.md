@@ -26,5 +26,5 @@ racon hap1.read.fasta hap1r.vs.hap1a.paf nc10.nv1hap1.contigs.fasta > nc10.nv1ha
 
 ```
 
-The assembly of hap2 followed the aforementioned approach, however, the entire locus was not completely assembled. While there are multiple reads on the unassembled side, there is only one read that extends across into the assembled side and, given the consistency of intergenic distances in the assembled side and the noise in the read, it was not possible to unambiguously place this read. Read f6e8e60a-ae40-42e8-8824-5f4cfdc51a68 was taken to represent the unassembled side as it spanned the longest distance from the flanking region into the locus (with the exception of the aforementioned read).
+The assembly of hap2 followed the aforementioned approach, however, the entire locus was not completely assembled. While there are multiple reads on the unassembled side, there is only one read that extends across into the assembled side and, given the consistency of intergenic distances in the assembled side and the noise in the read, it was not possible to unambiguously place this read. Read f6e8e60a-ae40-42e8-8824-5f4cfdc51a68 was taken to represent the unassembled side as it spanned the next longest distance from the flanking region into the locus.
 
